@@ -7,6 +7,7 @@ import { Head, Link, router } from "@inertiajs/react";
 
 export default function index({ auth, projects, queryParams = null }) {
     queryParams = queryParams || {}
+
     const searchFieldChanged = (name, value) => {
 
         if (value) {
@@ -22,7 +23,23 @@ export default function index({ auth, projects, queryParams = null }) {
         if (e.key !== 'Enter') return;
 
         searchFieldChanged(name, e.target.value);
+    }
+
+    const sortChanged = (name) => {
         
+        if (name === queryParams.sort_field){
+            if (queryParams.sort_direction === 'asc') {
+                queryParams.sort_direction = 'desc'
+            }else{
+                queryParams.sort_direction = 'asc'
+            }
+        }else{
+            queryParams.sort_field = name
+            queryParams.sort_direction = 'asc'
+        }
+
+        console.log(queryParams);
+       router.get(route('project.index'), queryParams);
     }
 
     return (
@@ -40,12 +57,12 @@ export default function index({ auth, projects, queryParams = null }) {
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700  uppercase  bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-b-2 border-gray-500">
                                 <tr className="text-nowrap">
-                                    <th className="px-3 py-3">ID</th>
+                                    <th onClick={(e) => sortChanged('id')} className="px-3 py-3">ID</th>
                                     <th className="px-3 py-3">Imagen</th>
-                                    <th className="px-3 py-3">Nombre</th>
-                                    <th className="px-3 py-3">Estado</th>
-                                    <th className="px-3 py-3">Fecha Creacion</th>
-                                    <th className="px-3 py-3">Fecha Actualizacion</th>
+                                    <th onClick={(e) => sortChanged('name')} className="px-3 py-3">Nombre</th>
+                                    <th onClick={(e) => sortChanged('status')} className="px-3 py-3">Estado</th>
+                                    <th onClick={(e) => sortChanged('created_at')} className="px-3 py-3">Fecha Creacion</th>
+                                    <th onClick={(e) => sortChanged('due_date')} className="px-3 py-3">Fecha Actualizacion</th>
                                     <th className="px-3 py-3">Creado Por</th>
                                     <th className="px-3 py-3 text-right">Acciones</th>
                                 </tr>
@@ -64,7 +81,7 @@ export default function index({ auth, projects, queryParams = null }) {
                                         ></TextInput>
                                     </th>
                                     <th className="px-3 py-3">
-                                        <SelectInput 
+                                        <SelectInput
                                             className="w-full"
                                             defaultValue={queryParams.status}
                                             onChange={(e) => searchFieldChanged("status", e.target.value)}
