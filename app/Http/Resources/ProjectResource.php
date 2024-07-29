@@ -13,6 +13,10 @@ class ProjectResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+
+    //desactiva el wrap
+    public static $wrap = false;
+
     public function toArray(Request $request): array
     {
         //Esto es solo lo que necesitamos devolver
