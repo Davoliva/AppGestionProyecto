@@ -7,7 +7,7 @@ export default function index({ auth, tasks, queryParams = null }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Proyectos</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Tareas</h2>}
         >
             <Head title="Tasks" />
 
